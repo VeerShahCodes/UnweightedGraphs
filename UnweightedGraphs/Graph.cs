@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 namespace UnweightedGraphs
 {
     public class Graph<T>
+        where T : IComparable<T>
     {
         public List<Vertex<T>> Vertices { get; private set; }
 
@@ -61,11 +62,38 @@ namespace UnweightedGraphs
             return false;
         }
 
-        Vertex<T> Search(T value)
+        public Vertex<T> Search(T value)
         {
+            for(int i = 0; i < Vertices.Count; i++)
+            {
+                if (Vertices[i].value.CompareTo(value) == 0) return Vertices[i];
+            }
             return null;
         }
 
+        public void DepthFirstTraversal(Vertex<T> start)
+        {
+            if (Vertices.Contains(start) == false) return;
+            else
+            {
+                HashSet<Vertex<T>> visited = new HashSet<Vertex<T>>();
+                
+                RecDepthFirst(start, visited);
+            }
+        }
+        public void RecDepthFirst(Vertex<T> current, HashSet<Vertex<T>> visited)
+        {
+            visited.Add(current);
+            Console.WriteLine(current.value);
+            for(int i = 0; i < current.Neighbors.Count; i++)
+            {
+                if (!visited.Contains(current.Neighbors[i]))
+                {
+                    RecDepthFirst(current.Neighbors[i], visited);
+                }
+     
+            }
+        }
 
     }
 }
