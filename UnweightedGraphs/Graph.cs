@@ -95,10 +95,29 @@ namespace UnweightedGraphs
             }
         }
 
-        public void IterativeDepthFirstTraversal(Vertex<T> start)
+        public void IterativeDepthFirstTraversal(Vertex<T> start, List<Vertex<T>> popped)
         {
-            //todo
- 
+            Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
+            stack.Push(start);
+            HashSet<Vertex<T>> visited = new HashSet<Vertex<T>>();
+            while(stack.Count > 0)
+            {
+                Vertex<T> current = stack.Peek();
+                visited.Add(current);
+                popped.Add(stack.Pop());
+
+                for (int i = current.NeighborCount - 1; i > -1; i--)
+                {
+                    if (!visited.Contains(current.Neighbors[i]))
+                    {
+                        stack.Push(current.Neighbors[i]);
+                    }
+                }
+
+   
+
+            }
+
 
         }
 
