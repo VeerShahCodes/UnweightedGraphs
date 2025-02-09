@@ -148,5 +148,30 @@ namespace UnweightedGraphs
             }
         }
 
+        public List<Vertex<T>> SingleSourceShortedPath(Vertex<T> start, Vertex<T> end)
+        {
+            if (!(Vertices.Contains(start) && Vertices.Contains(end))) return null;
+            List<Vertex<T>> path = new List<Vertex<T>>();
+            return RecSingleSourceShortedPath(start, end, path);
+
+        }
+        public List<Vertex<T>> RecSingleSourceShortedPath(Vertex<T> current, Vertex<T> goal, List<Vertex<T>> path)
+        {
+            
+            path.Add(current);
+            if(current.Equals(goal))
+            {
+                return path;
+            }
+            for(int i = 0; i < current.NeighborCount; i++)
+            {
+                
+                RecSingleSourceShortedPath(current.Neighbors[i], goal, path);
+            }
+
+            return null;
+
+        }
+
     }
 }

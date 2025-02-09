@@ -41,6 +41,9 @@
             {
                 Console.WriteLine(vertex.value);
             }
+            Console.WriteLine("Single shorted path:");
+            List<Vertex<int>> paths = new List<Vertex<int>>();
+            paths = graph.SingleSourceShortedPath(graph.Search(1), graph.Search(8));
             ;
 
         }
