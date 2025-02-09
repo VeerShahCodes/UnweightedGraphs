@@ -97,13 +97,16 @@ namespace UnweightedGraphs
 
         public void IterativeDepthFirstTraversal(Vertex<T> start, List<Vertex<T>> popped)
         {
+            if(Vertices.Contains(start) == false) { return; }
             Stack<Vertex<T>> stack = new Stack<Vertex<T>>();
-            stack.Push(start);
             HashSet<Vertex<T>> visited = new HashSet<Vertex<T>>();
+            stack.Push(start);
+            visited.Add(start);
+            
             while(stack.Count > 0)
             {
                 Vertex<T> current = stack.Peek();
-                visited.Add(current);
+                
                 popped.Add(stack.Pop());
 
                 for (int i = current.NeighborCount - 1; i > -1; i--)
@@ -111,6 +114,7 @@ namespace UnweightedGraphs
                     if (!visited.Contains(current.Neighbors[i]))
                     {
                         stack.Push(current.Neighbors[i]);
+                        visited.Add(current.Neighbors[i]);
                     }
                 }
 
@@ -119,6 +123,29 @@ namespace UnweightedGraphs
             }
 
 
+        }
+
+        public void BreadthFirstTraversal(Vertex<T> start, List<Vertex<T>> dequed)  
+        {
+            if(Vertices.Contains(start) == false) { return; }
+            Queue<Vertex<T>> queue = new Queue<Vertex<T>>();
+            HashSet<Vertex<T>> visited = new HashSet<Vertex<T>>();
+            queue.Enqueue(start);
+            visited.Add(start);
+            while (queue.Count > 0)
+            {
+                Vertex<T> current = queue.Peek();
+               
+                dequed.Add(queue.Dequeue());
+                for(int i = 0; i < current.NeighborCount; i++)
+                {
+                    if (!visited.Contains(current.Neighbors[i]))
+                    {
+                        queue.Enqueue(current.Neighbors[i]);
+                        visited.Add(current.Neighbors[i]);
+                    }
+                }
+            }
         }
 
     }
