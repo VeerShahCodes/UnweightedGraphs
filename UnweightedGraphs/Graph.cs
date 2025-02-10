@@ -148,27 +148,48 @@ namespace UnweightedGraphs
             }
         }
 
+        //make breadth first and connect dictionary to path
         public List<Vertex<T>> SingleSourceShortedPath(Vertex<T> start, Vertex<T> end)
         {
-            if (!(Vertices.Contains(start) && Vertices.Contains(end))) return null;
-            List<Vertex<T>> path = new List<Vertex<T>>();
-            return RecSingleSourceShortedPath(start, end, path);
-
-        }
-        public List<Vertex<T>> RecSingleSourceShortedPath(Vertex<T> current, Vertex<T> goal, List<Vertex<T>> path)
-        {
-            
-            path.Add(current);
-            if(current.Equals(goal))
+            if (Vertices.Contains(start) == false) { return null; }
+            Dictionary<Vertex<T>, Vertex<T>> previousVertex = new Dictionary<Vertex<T>, Vertex<T>>();
+            Queue<Vertex<T>> queue = new Queue<Vertex<T>>();
+            HashSet<Vertex<T>> visited = new HashSet<Vertex<T>>();
+            queue.Enqueue(start);
+            visited.Add(start);
+            while (queue.Count > 0)
             {
-                return path;
-            }
-            for(int i = 0; i < current.NeighborCount; i++)
-            {
-                
-                RecSingleSourceShortedPath(current.Neighbors[i], goal, path);
-            }
+                Vertex<T> current = queue.Dequeue();
 
+                if (current.Equals(end))
+                {
+                    List<Vertex<T>> path = new List<Vertex<T>>();
+                    while (current != null)
+                    {
+                        path.Add(current);
+                        if (previousVertex.ContainsKey(current))
+                        {
+                            current = previousVertex[current];
+                        }
+                        else
+                        {
+                            current = null;
+                        }
+                    }
+                    path.Reverse();
+                    return path;
+                }
+
+                for (int i = 0; i < current.NeighborCount; i++)
+                {
+                    if (!visited.Contains(current.Neighbors[i]))
+                    {
+                        queue.Enqueue(current.Neighbors[i]);
+                        visited.Add(current.Neighbors[i]);
+                        previousVertex[current.Neighbors[i]] = current;
+                    }
+                }
+            }
             return null;
 
         }
